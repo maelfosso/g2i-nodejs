@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export interface IAcronym extends Document {
+export interface AcronymDocument extends Document {
   name: string;
   description: string;
 }
@@ -14,6 +14,6 @@ const AcronymSchema: Schema = new Schema({
     type: String, 
     required: true
   }
-});
+}, { timestamps: true });
 
-export default mongoose.model<IAcronym>('Acronym', AcronymSchema);
+export default mongoose.model<AcronymDocument>('Acronym', AcronymSchema);
