@@ -1,15 +1,16 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import debug from 'debug';
+import debugLib from 'debug';
 import { config } from './config/config';
+import apiRoutes from './routes/api.routes';
+
+const debug = debugLib('g2i:api');
 
 const app = express();
 
 app.use(express.json());
 
-// app.listen(process.env.PORT || 3000, () => {
-//   console.log('Listening on port 3000 !');
-// });
+app.use('/api', apiRoutes);
 
 mongoose
 .connect(config.db.uri, {
@@ -21,12 +22,8 @@ mongoose
   debug(`Connected to MongoDB at ${config.db.uri}`);
 
   app.listen(process.env.PORT || 3000, () => {
-    console.log('Listening on port 3000 !');
+    debug('Listening on port 3000 !');
   });
-  
-  // server.listen(port);
-  // server.on('error', onError);
-  // server.on('listening', onListening);
 
 })
 .catch((err) => {

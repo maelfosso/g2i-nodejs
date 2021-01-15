@@ -10,10 +10,11 @@ services:
     environment: 
       - MONGODB_HOST=db
       - MONGODB_PORT=27017
-      - MONGODB_NAME=acronym
+      - MONGODB_DBNAME=acronym-dev
     networks:
       - api
-
+    volumes: 
+      - .:/app
   db:
     image: mongo
     ports: 
