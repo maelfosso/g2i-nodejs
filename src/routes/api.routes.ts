@@ -21,7 +21,7 @@ router.route('/')
   .get(api.getAll)
 ;
   
-router.route('/:id')
+router.route('/:code')
   .get(api.get)
   .delete(api.remove)
 ;
