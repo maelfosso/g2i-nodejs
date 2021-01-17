@@ -1,12 +1,21 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
-export interface AcronymDocument extends Document {
-  name: string;
+export interface AcronymAttributes {
+  code: string;
   description: string;
 }
 
+export interface AcronymDocument extends Document {
+  code: string;
+  description: string;
+}
+
+interface AcronymModel extends Model<AcronymDocument> {
+  build(acronym: AcronymAttributes): AcronymDocument;
+}
+
 const AcronymSchema: Schema = new Schema({
-  name: { 
+  code: { 
     type: String,
     required: true
   },
@@ -16,4 +25,10 @@ const AcronymSchema: Schema = new Schema({
   }
 }, { timestamps: true });
 
-export default mongoose.model<AcronymDocument>('Acronym', AcronymSchema);
+const Acronym = mongoose.model<AcronymDocument, AcronymModel>('Acronym', AcronymSchema);
+
+AcronymSchema.statics.build = (acronym: AcronymAttributes) => {
+  return new Acronym(acronym);
+}
+
+export default Acronym;
