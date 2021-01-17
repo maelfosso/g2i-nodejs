@@ -6,7 +6,7 @@ const router = express.Router();
   
 router.route('/acronym/:code')
   .get(api.get)
-  .put(api.update);
+  .put(api.update)
   .delete(api.remove)
 ;
 

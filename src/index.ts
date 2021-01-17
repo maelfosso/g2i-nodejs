@@ -29,6 +29,8 @@ app.all('*', async () => {
 // Handle errors
 app.use(errorHandler);
 
+// Enable mongoose debug
+mongoose.set('debug', true);
 
 // MongoDB connection and start the server
 mongoose

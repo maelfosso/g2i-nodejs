@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
+import escapeStringRegExp from 'escape-string-regexp';
 import debugLib from 'debug';
 import Acronym from '../models/acronym';
 import acronym, { AcronymDocument } from '../models/acronym';
@@ -64,8 +65,19 @@ export const getAll = async (req: Request, res: Response) => {
 
   debug(`Get ALL ${from} - ${limit} - ${search}`);
 
+  let options = {};
+  if (search) {
+    const regex = new RegExp(escapeStringRegExp(search as string));
+
+    options = { 
+      $or: [
+        { code: { $regex: regex, $options: 'xsim' }} ,
+        { description: { $regex: regex, $options: 'xsim' }} 
+      ] 
+    }
+  }
   try {
-    data = await Acronym.find({});
+    data = await Acronym.find(options).limit(limit ? limit : -1);
   } catch(err) {
     throw new Error('');
   }
