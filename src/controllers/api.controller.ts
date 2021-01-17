@@ -43,19 +43,21 @@ export const create = async (req: Request, res: Response) => {
 }
 
 export const get = async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const { code } = req.params;
+  
   let acronym: AcronymDocument; 
 
   try {
-    acronym = await Acronym.findById(id);
+    acronym = await Acronym.findOne({ code });
   } catch(err) {
-    throw new Error('');
+    throw new DatabaseError(`Error occured when retreiving acronym(${code})`, err.message);
   }
 
   return res.status(200).send({ data: acronym });
 }
 
 export const getAll = async (req: Request, res: Response) => {
+  const { from, limit, search } = req.query;
   let data: AcronymDocument[];
 
   try {
