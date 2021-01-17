@@ -5,11 +5,12 @@ import Acronym, { AcronymDocument } from '../models/acronym';
 
 const debug = debugLib('g2i:seed');
 
-// Clean the collection
-Acronym.remove({});
-debug('Acronym collection cleaned up')
 
 const seed = async () => {
+  
+  // Clean the collection
+  await Acronym.remove({});
+  debug('Acronym collection cleaned up')
 
   // Add data into the collection
   for (let i=0; i < data.length; i++) {

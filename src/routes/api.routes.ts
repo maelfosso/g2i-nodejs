@@ -3,8 +3,18 @@ import { body } from 'express-validator';
 import * as api from '../controllers/api.controller';
 
 const router = express.Router();
+  
+router.route('/acronym/:code')
+  .get(api.get)
+  .put(api.update)
+  .delete(api.remove)
+;
 
-router.route('/') 
+router.route('/random/:count?')
+  .get(api.random)
+;
+
+router.route('/acronym') 
   .post(
     [
       body('code')
@@ -20,10 +30,6 @@ router.route('/')
   )
   .get(api.getAll)
 ;
-  
-router.route('/:code')
-  .get(api.get)
-  .delete(api.remove)
-;
+
 
 export default router;

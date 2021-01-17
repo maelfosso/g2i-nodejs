@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cors());
 
 // Routes
-app.use('/api', apiRoutes);
+app.use('/', apiRoutes);
 
 // Route Not found
 app.all('*', async () => {
@@ -29,6 +29,8 @@ app.all('*', async () => {
 // Handle errors
 app.use(errorHandler);
 
+// Enable mongoose debug
+mongoose.set('debug', true);
 
 // MongoDB connection and start the server
 mongoose
