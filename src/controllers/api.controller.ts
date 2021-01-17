@@ -76,13 +76,21 @@ export const getAll = async (req: Request, res: Response) => {
       ] 
     }
   }
+
   try {
-    data = await Acronym.find(options).limit(limit ? limit : -1);
+    const pageNumber = parseInt(from as string);
+    const max = parseInt(limit as string);
+
+    data = await Acronym
+      .find(options)
+      .skip(pageNumber > 0 ? pageNumber : 0 )
+      .limit(max ? max : -1);
+
   } catch(err) {
-    throw new Error('');
+    throw new DatabaseError(`Error occured when retreiving acronyms(${from} - ${limit} - ${search})`, err.message)
   }
 
-  return res.status(200).send({ data: data })
+  return res.status(200).json({ data: data })
 }
 
 export const update = async (req: Request, res: Response) => {
