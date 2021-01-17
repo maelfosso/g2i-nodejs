@@ -90,12 +90,12 @@ export const update = async (req: Request, res: Response) => {
 }
 
 export const remove = async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const { code } = req.params;
 
   try {
-    await Acronym.remove({ _id: id });
+    await Acronym.remove({ code });
   } catch(err) {
-    throw new Error('');
+    throw new DatabaseError(`Error occured when deleting acronym(${code})`, err.message)
   }
 
   return res.status(200).send({ success: true });
