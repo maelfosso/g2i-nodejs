@@ -25,10 +25,10 @@ const AcronymSchema: Schema = new Schema({
   }
 }, { timestamps: true });
 
-const Acronym = mongoose.model<AcronymDocument, AcronymModel>('Acronym', AcronymSchema);
-
 AcronymSchema.statics.build = (acronym: AcronymAttributes) => {
   return new Acronym(acronym);
 }
+
+const Acronym = mongoose.model<AcronymDocument, AcronymModel>('Acronym', AcronymSchema);
 
 export default Acronym;

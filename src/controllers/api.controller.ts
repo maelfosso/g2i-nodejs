@@ -44,6 +44,7 @@ export const create = async (req: Request, res: Response) => {
 
 export const get = async (req: Request, res: Response) => {
   const { code } = req.params;
+  
   let acronym: AcronymDocument; 
 
   try {
@@ -56,6 +57,7 @@ export const get = async (req: Request, res: Response) => {
 }
 
 export const getAll = async (req: Request, res: Response) => {
+  const { from, limit, search } = req.query;
   let data: AcronymDocument[];
 
   try {

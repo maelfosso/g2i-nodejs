@@ -5,6 +5,8 @@ import debugLib from 'debug';
 import 'express-async-errors';
 
 import { config } from './config/config';
+import seed from './utils/seed';
+
 import apiRoutes from './routes/api.routes';
 import { errorHandler } from './middlewares/error-handler';
 
@@ -37,6 +39,8 @@ mongoose
 })
 .then(() => {
   debug(`Connected to MongoDB at ${config.db.uri}`);
+
+  seed();
 
   app.listen(process.env.PORT || 3000, () => {
     debug('Listening on port 3000 !');
