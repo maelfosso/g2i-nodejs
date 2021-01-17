@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cors());
 
 // Routes
-app.use('/api', apiRoutes);
+app.use('/', apiRoutes);
 
 // Route Not found
 app.all('*', async () => {

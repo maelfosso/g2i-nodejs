@@ -44,6 +44,8 @@ export const create = async (req: Request, res: Response) => {
 
 export const get = async (req: Request, res: Response) => {
   const { code } = req.params;
+
+  debug(`Get : ${code} .`);
   
   let acronym: AcronymDocument; 
 
@@ -60,13 +62,19 @@ export const getAll = async (req: Request, res: Response) => {
   const { from, limit, search } = req.query;
   let data: AcronymDocument[];
 
+  debug(`Get ALL ${from} - ${limit} - ${search}`);
+
   try {
-    data = Acronym.find({});
+    data = await Acronym.find({});
   } catch(err) {
     throw new Error('');
   }
 
   return res.status(200).send({ data: data })
+}
+
+export const update = async (req: Request, res: Response) => {
+  
 }
 
 export const remove = async (req: Request, res: Response) => {
