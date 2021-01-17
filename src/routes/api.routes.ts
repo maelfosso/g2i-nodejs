@@ -1,10 +1,23 @@
 import express from 'express';
+import { body } from 'express-validator';
 import * as api from '../controllers/api.controller';
 
 const router = express.Router();
 
 router.route('/') 
-  .post(api.create)
+  .post(
+    [
+      body('code')
+        .notEmpty()
+        .trim()
+        .escape(),
+      body('description')
+        .notEmpty()
+        .trim()
+        .escape()
+    ], 
+    api.create
+  )
   .get(api.getAll)
 ;
   

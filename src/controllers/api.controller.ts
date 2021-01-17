@@ -1,15 +1,33 @@
 import { Request, Response } from 'express';
+import { validationResult } from 'express-validator';
+import debugLib from 'debug';
 import Acronym from '../models/acronym';
 import acronym, { AcronymDocument } from '../models/acronym';
-import debugLib from 'debug';
+import { RequestValidationError } from '../errors/request-validation-error';
+import { BadRequestError } from '../errors/bad-request';
+import { DatabaseError } from '../errors/database-error';
 
 const debug = debugLib('g2i:api-controller');
 
 export const create = async (req: Request, res: Response) => {
+  // extract possible errors from express-validator (api.routes.ts#10-17)
+  // If there are some errors, throw them
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    throw new RequestValidationError(errors.array());
+  }
+
   const { body } = req;
   const { code, description } = body;
-  debug(body, code, description);
 
+  // Check if this code already exists
+  const existingAcronym = Acronym.findOne({ code });
+  if (existingAcronym) {
+    throw new BadRequestError(`Code already exist. An acronym with this code (${code}) already exist.`);
+  }
+
+  // Save the acronym
   const acronym = Acronym.build({
     code,
     description
@@ -18,10 +36,10 @@ export const create = async (req: Request, res: Response) => {
   try {
     await acronym.save();
   } catch(err) {
-    throw new Error(err.message);
+    throw new DatabaseError(`Error when saving acronym(${code}, ${description})`, err.message);
   }
 
-  return res.status(200).send({ data: acronym });
+  return res.status(201).send({ data: acronym });
 }
 
 export const get = async (req: Request, res: Response) => {
