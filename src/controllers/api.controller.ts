@@ -90,7 +90,7 @@ export const getAll = async (req: Request, res: Response) => {
     throw new DatabaseError(`Error occured when retreiving acronyms(${from} - ${limit} - ${search})`, err.message)
   }
 
-  return res.status(200).json({ data: data })
+  return res.status(200).send({ data: data })
 }
 
 export const update = async (req: Request, res: Response) => {
@@ -103,8 +103,28 @@ export const remove = async (req: Request, res: Response) => {
   try {
     await Acronym.remove({ code });
   } catch(err) {
-    throw new DatabaseError(`Error occured when deleting acronym(${code})`, err.message)
+    throw new DatabaseError(`Error occured when deleting acronym(${code})`, err.message);
   }
 
   return res.status(200).send({ success: true });
+}
+
+export const random = async (req: Request, res: Response) => {
+  let { count } = req.params;
+  let data: AcronymDocument[] = [];
+  let size: number;
+
+  try {
+    if (!count) {
+      size = Math.floor(Math.random() * 100)
+    } else {
+      size = parseInt(count);
+    }
+
+    data = await Acronym.aggregate([ { $sample: { size: size } }]);
+  } catch(err) {
+    throw new DatabaseError(`Error occured when randomly fetching acronyms data`, err.message)
+  }
+
+  return res.status(200).send({ data: data });
 }

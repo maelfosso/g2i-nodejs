@@ -10,6 +10,10 @@ router.route('/acronym/:code')
   .delete(api.remove)
 ;
 
+router.route('/random/:count?')
+  .get(api.random)
+;
+
 router.route('/acronym') 
   .post(
     [
