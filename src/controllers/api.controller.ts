@@ -23,7 +23,7 @@ export const create = async (req: Request, res: Response) => {
   const { code, description } = body;
 
   // Check if this code already exists
-  const existingAcronym = Acronym.findOne({ code });
+  const existingAcronym: AcronymDocument = Acronym.findOne({ code });
   if (existingAcronym) {
     throw new BadRequestError(`Code already exist. An acronym with this code (${code}) already exist.`);
   }
@@ -94,7 +94,24 @@ export const getAll = async (req: Request, res: Response) => {
 }
 
 export const update = async (req: Request, res: Response) => {
-  
+  const { body } = req;
+  const { code, description } = body;
+
+  // Check if this code already exists
+  const acronym: AcronymDocument = Acronym.findOne({ code });
+  if (!acronym) {
+    throw new BadRequestError(`Code nod exist. An acronym with this code (${code}) does not exist. Update is not possible`);
+  }
+
+  // Replace document with new values
+  try {
+    await Acronym.replaceOne({ _id: acronym._id }, { code: code, description: description });
+
+  } catch(err) {
+    throw new DatabaseError(`Error when updating acronym(${code}, ${description})`, err.message);
+  }
+
+  return res.status(201).send({ data: acronym });
 }
 
 export const remove = async (req: Request, res: Response) => {
