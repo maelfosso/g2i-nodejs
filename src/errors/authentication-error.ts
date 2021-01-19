@@ -1,7 +1,7 @@
 import { CustomError } from "./custom-error";
 
 export class AuthenticationError extends CustomError {
-  statusCode = 403;
+  statusCode = 401;
 
   constructor() {
     super('Authentication Error! Need to provide authentication token !');

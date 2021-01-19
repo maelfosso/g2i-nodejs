@@ -80,14 +80,23 @@ export const getAll = async (req: Request, res: Response) => {
   }
 
   try {
-    const pageNumber = parseInt(from as string);
+    const offset = parseInt(from as string);
     const max = parseInt(limit as string);
 
     data = await Acronym
       .find(options)
-      .skip(pageNumber > 0 ? pageNumber : 0 )
-      .limit(max ? max : -1);
+      .skip(offset > 0 ? offset : 0 )
+      .limit(max ? max : 0);
 
+    let remaining = 0; 
+    if (max) {
+      remaining = await Acronym.count() - max;
+    }
+    if (offset) {
+      remaining = remaining - offset;
+    }
+
+    res.set('X-REMAINING', remaining.toString());
   } catch(err) {
     throw new DatabaseError(`Error occured when retreiving acronyms(${from} - ${limit} - ${search})`, err.message)
   }

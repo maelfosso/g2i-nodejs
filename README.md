@@ -40,7 +40,7 @@ If you don't have `docker-compose` but `NodeJs` and `npm` installed
 
 - **`GET /acronym?from=50&limit=10&search=:search`**
   - ▶ returns a list of acronyms, paginated using query parameters
-  - ▶ response headers indicate if there are more results
+  - ▶ response headers indicate if there are more results. The `X-REMAINING` field in the response headers indicate if there are more results. 
   - ▶ returns all acronyms that fuzzy match against `:search`
 - **`GET /acronym/:acronym`**
   - ▶ returns the acronym and definition matching `:acronym`
@@ -57,6 +57,9 @@ If you don't have `docker-compose` but `NodeJs` and `npm` installed
 - **`DELETE /acronym/:acronym`**
   - ▶ deletes `:acronym`
   - ▶ uses an authorization header to ensure acronyms are protected
+
+
+The `X-REMAINING` field in the response headers indicate if there are more results. 
 
 For the authorization header, the TOKEN is the `**auth**` field from `src/config/config.ts` file
 
