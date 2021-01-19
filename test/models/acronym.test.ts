@@ -11,7 +11,7 @@ declare global {
   }
 }
 
-describe('insert', () => {
+describe('Test concerning Acronym Models', () => {
   
   beforeAll(async () => {
     try {
@@ -21,6 +21,10 @@ describe('insert', () => {
       process.exit(1);
     }
   });
+
+  // afterEach(async () => {
+  //   await Acronym.remove();
+  // });
 
   afterAll(async () => {
     mongoose.connection.close();
