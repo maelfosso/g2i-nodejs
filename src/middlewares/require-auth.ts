@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthenticationError } from "../errors/authentication-error";
+import { config } from '../config/config'
 
-const AUTH_TOKEN = 'XbPfbIHMI6arZ3Y922Bh';
+const AUTH_TOKEN = config.auth;
 
 const requireAuth = (
   req: Request,
