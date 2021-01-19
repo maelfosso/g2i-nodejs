@@ -1,13 +1,14 @@
 import express from 'express';
 import { body } from 'express-validator';
 import * as api from '../controllers/api.controller';
+import { requireAuth } from '../middlewares/require-auth';
 
 const router = express.Router();
   
 router.route('/acronym/:code')
   .get(api.get)
-  .put(api.update)
-  .delete(api.remove)
+  .put(requireAuth, api.update)
+  .delete(requireAuth, api.remove)
 ;
 
 router.route('/random/:count?')
