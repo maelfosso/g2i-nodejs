@@ -1,12 +1,12 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import debugLib from 'debug';
 import 'express-async-errors';
 
 
 import apiRoutes from './routes/api.routes';
 import { errorHandler } from './middlewares/error-handler';
+import { NotFoundError } from './errors/not-found-error';
 
 
 const app = express();
@@ -20,7 +20,7 @@ app.use('/', apiRoutes);
 
 // Route Not found
 app.all('*', async () => {
-  throw new Error("Route not found!")
+  throw new NotFoundError();
 });
 
 // Handle errors

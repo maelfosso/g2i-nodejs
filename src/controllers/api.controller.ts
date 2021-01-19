@@ -2,10 +2,11 @@ import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import escapeStringRegExp from 'escape-string-regexp';
 import debugLib from 'debug';
+
 import Acronym from '../models/acronym';
 import acronym, { AcronymDocument } from '../models/acronym';
 import { RequestValidationError } from '../errors/request-validation-error';
-import { BadRequestError } from '../errors/bad-request';
+import { BadRequestError } from '../errors/bad-request-error';
 import { DatabaseError } from '../errors/database-error';
 
 const debug = debugLib('g2i:api-controller');
@@ -15,6 +16,7 @@ export const create = async (req: Request, res: Response) => {
   // If there are some errors, throw them
   const errors = validationResult(req);
 
+  debug('POST - create');
   if (!errors.isEmpty()) {
     throw new RequestValidationError(errors.array());
   }
